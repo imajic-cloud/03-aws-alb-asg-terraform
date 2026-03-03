@@ -1,58 +1,67 @@
-# 🚀 Terraform AWS Docker Lab
+# Terraform AWS ALB + ASG Infrastructure
 
-## 📌 Overview
+## Overview
 
-This project provisions production-style infrastructure on AWS using Terraform.
+Production-style AWS infrastructure built with Terraform.
 
-It deploys a Dockerized Nginx application behind an Application Load Balancer with Auto Scaling support.
+This project deploys a Dockerized Nginx application behind:
+
+- Application Load Balancer (ALB)
+- Auto Scaling Group (ASG)
+- Launch Template
+
+Infrastructure is fully reproducible and designed to be created and destroyed safely.
 
 ---
 
-## 🏗 Architecture
+## Architecture
 
-Internet  
-   ↓  
-Application Load Balancer  
-   ↓  
-Target Group (Health Checks)  
-   ↓  
-Auto Scaling Group (min=1, max=2)  
-   ↓  
+```
+Internet
+   │
+   ▼
+Application Load Balancer (ALB)
+   │
+   ▼
+Target Group (HTTP health checks)
+   │
+   ▼
+Auto Scaling Group (min=1, max=2)
+   │
+   ▼
 EC2 Instance (Docker + Nginx)
+```
 
 ---
 
-## ⚙️ Features Implemented
+## Key Features
 
 - Remote backend (S3 + DynamoDB state locking)
-- Modular Terraform structure
-- Launch Template for immutable infrastructure
+- Launch Template (immutable infrastructure)
 - Auto Scaling Group (self-healing)
-- Application Load Balancer
-- Target Group health checks
-- Proper security group referencing (ALB → EC2)
-- IAM Instance Profile for EC2
-- Dockerized Nginx deployment via user_data
-- Infrastructure destroy/recreate workflow
+- ALB with health checks
+- Proper security group separation (ALB → EC2)
+- IAM instance profile
+- Docker deployment via user_data
+- Infrastructure lifecycle management
 
 ---
 
-## 🧠 Key Concepts Practiced
-
-- Immutable infrastructure
-- Launch Templates vs aws_instance
-- ASG behavior & instance replacement
-- ALB health check debugging
-- Security group referencing
-- Terraform state management
-- Cost-aware infrastructure lifecycle
-
----
-
-## 🛠 Commands Used
+## Terraform Commands
 
 ```bash
 terraform init
 terraform plan
 terraform apply
 terraform destroy
+```
+
+---
+
+## What This Demonstrates
+
+- Immutable infrastructure principles
+- High availability design
+- Self-healing systems
+- Terraform module structure
+- AWS networking fundamentals
