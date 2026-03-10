@@ -45,15 +45,39 @@ Before deploying this infrastructure, ensure you have:
 
 This Terraform project provisions the following AWS resources:
 
-* Application Load Balancer (ALB)
-* Target Group with health checks on port 80
-* Auto Scaling Group with EC2 instances
-* Launch Template
-* Security Groups (ports 80 and 22)
-* IAM roles for EC2 instances
-* EC2 instances running Docker and Nginx
+* **Application Load Balancer (ALB)** - Internet-facing load balancer
+* **Target Group** - Routes traffic with health checks on port 80
+* **Auto Scaling Group (ASG)** - Manages EC2 instance lifecycle (min: 1, max: 2)
+* **Launch Template** - Blueprint for EC2 instance configuration
+* **Security Groups** - Two separate groups for layered security:
+  * ALB Security Group (allows HTTP from internet)
+  * EC2 Security Group (allows HTTP from ALB only, SSH from authorized IP)
+* **IAM Role & Instance Profile** - Permissions for EC2 instances
+* **EC2 Instances** - Running Amazon Linux 2 with Docker and Nginx
+* **ALB Listener** - Listens on port 80 and forwards to target group
 
----
+
+
+## Security Best Practices
+
+This project implements AWS security best practices:
+
+### **Layered Security Groups**
+- **ALB Security Group**: Accepts HTTP (port 80) from the internet (0.0.0.0/0)
+- **EC2 Security Group**: 
+  - Accepts HTTP (port 80) ONLY from the ALB security group
+  - Accepts SSH (port 22) ONLY from authorized IP address
+  - EC2 instances are NOT directly accessible from the internet
+
+### **Principle of Least Privilege**
+- All web traffic must flow through the Application Load Balancer
+- EC2 instances hidden behind the ALB (cannot be accessed directly)
+- SSH access restricted to a single IP address for administrative purposes
+
+### **Defense in Depth**
+- Multiple security layers (network-level security groups + application-level ALB)
+- ALB provides DDoS protection and traffic filtering before reaching EC2
+- Auto Scaling Group automatically replaces unhealthy instances
 
 ## Deployment
 

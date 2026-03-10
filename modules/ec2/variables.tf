@@ -2,8 +2,14 @@ variable "instance_type" {
   type = string
 }
 
+variable "alb_security_group_id" {
+  description = "Security group ID for ALB"
+  type        = string
+}
+
 variable "security_group_id" {
-  type = string
+  description = "Security group ID for EC2 instances"
+  type        = string
 }
 
 variable "key_name" {
@@ -25,6 +31,13 @@ variable "instance_profile_name" {
 variable "subnet_ids" {
   type = list(string)
 }
+
 variable "vpc_id" {
   type = string
 }
+
+
+
+
+
+

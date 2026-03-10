@@ -1,7 +1,1 @@
-variable "name" {
-  type = string
-}
-
-variable "app_port" {
-  type = number
-}
+# No variables needed - security groups are self-contained
